@@ -18,6 +18,10 @@ class Place extends Model
         'name','desc','address','position','bookmark','user_id'
     ];
 
+//    protected $hidden = ['position'];
+
+//    protected $appends = ['lat','lng'];
+
     protected $spatialFields = [
         'position',
     ];
@@ -26,5 +30,8 @@ class Place extends Model
         'bookmark' => 'bool',
         'user_id'=>'int'
     ];
+
+
+
 
 }

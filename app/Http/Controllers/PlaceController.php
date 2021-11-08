@@ -6,6 +6,7 @@ use App\Models\Place;
 use Illuminate\Http\Request;
 use App\Http\Requests\PlaceRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PlaceController extends Controller
 {
@@ -19,10 +20,29 @@ class PlaceController extends Controller
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function index()
+    public function index(Request $request)
     {
 //        return Place::orderByDesc('id')->get();
-        return  Place::where('user_id',Auth::id())->orderByDesc('id')->get();
+
+        $t = $request->t;
+        $b = $request->b;
+        $r = $request->r;
+        $l = $request->l;
+
+//        return Place::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((? ?,? ?,? ?,? ?,? ?))',4326),position)",[$t, $l,$t, $r,$b ,$r,$b, $l,$t, $l])->get();
+
+//        return Place::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((? ?,? ?,? ?,? ?,? ?))',4326),position)",[37.5, 126,38, 126,38 ,127,37.5, 127,37.5, 126])->get();
+
+        $polygon = $t.' '.$l.','.$t.' '. $r.','.$b .' '.$r.','.$b.' '. $l.','.$t.' '. $l;
+        $result= Place::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((".$polygon."))',4326),position)")->take(10)->get();
+
+        return $result;
+//        "ST_Contains(ST_GeomFromText('Polygon((:t :l,:t :r,:b :r,:b :l,:t :l))',4326),position)",["t"=>$t,"b"=>$b,"l"=>$l,"r"=>$r]
+//        dd($t,$b,$r,$l);
+
+//        return  Place::where('user_id',Auth::id())->orderByDesc('id')->get();
+
+
     }
 
 

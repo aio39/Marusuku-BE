@@ -18,15 +18,6 @@ class UserController extends Controller
         return $request->user();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
 
     public function store(Request $request)
@@ -46,16 +37,7 @@ class UserController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
