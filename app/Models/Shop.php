@@ -15,15 +15,15 @@ class Shop extends Model
     use SpatialTrait;
 
     protected $fillable = [
-        'name','desc','address','position','bookmark','user_id'
+        'name','desc','address','location','bookmark','user_id'
     ];
 
-//    protected $hidden = ['position'];
+//    protected $hidden = ['location'];
 
 //    protected $appends = ['lat','lng'];
 
     protected $spatialFields = [
-        'position',
+        'location',
     ];
 
     protected $casts = [

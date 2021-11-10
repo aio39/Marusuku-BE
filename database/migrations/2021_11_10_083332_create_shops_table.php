@@ -26,9 +26,11 @@ class CreateShopsTable extends Migration
             $table->string('address2')->nullable();
             $table->integer('score_total')->default(0);
             $table->integer('score_count')->default(0);
-            $table->point('position',4326); // google map 3857
-            $table->foreignId('user_id')->constrained();
+            $table->point('location',4326); // google map 3857
+            $table->foreignId('user_id')->unique()->constrained();
             $table->timestamps();
+
+            $table->spatialIndex('location');
         });
     }
 

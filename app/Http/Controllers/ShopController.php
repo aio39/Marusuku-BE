@@ -29,11 +29,11 @@ class ShopController extends Controller
         $r = $request->r;
         $l = $request->l;
 
-//        return Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((? ?,? ?,? ?,? ?,? ?))',4326),position)",[$t, $l,$t, $r,$b ,$r,$b, $l,$t, $l])->get();
+//        return Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((? ?,? ?,? ?,? ?,? ?))',4326),location)",[$t, $l,$t, $r,$b ,$r,$b, $l,$t, $l])->get();
 
 
         $polygon = $t.' '.$l.','.$t.' '. $r.','.$b .' '.$r.','.$b.' '. $l.','.$t.' '. $l;
-        $result= Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((".$polygon."))',4326),position)")->take(20)->get();
+        $result= Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((".$polygon."))',4326),lacation)")->take(20)->get();
 
         return $result;
 

@@ -24,9 +24,9 @@ class ShopSeeder extends Seeder
                 'desc'=> $data[1],
                 'phone'=> $data[2],
                 'address'=> $data[3],
-//            'position'=> new Point($this->faker->latitude(37,38),$this->faker->latitude(37,38),3857),
-//            'position'=> new Point(40.7484404, -73.9878441,3857),
-                'position'=> \DB::raw("ST_SRID(ST_GeomFromText('POINT(".strval($data[5])." ".strval($data[4]).")'), 4326)"),
+//            'location'=> new Point($this->faker->latitude(37,38),$this->faker->latitude(37,38),3857),
+//            'location'=> new Point(40.7484404, -73.9878441,3857),
+                'location'=> \DB::raw("ST_SRID(ST_GeomFromText('POINT(".strval($data[5])." ".strval($data[4]).")'), 4326)"),
                 'user_id'=> $faker->numberBetween(1,3),
                 'created_at'=> now(),
                 'updated_at'=> now()
