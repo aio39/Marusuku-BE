@@ -15,11 +15,13 @@ class CreateShopsTable extends Migration
     {
         Schema::create('shops', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
+
             $table->string('name');
             $table->string('desc')->nullable();
             $table->string('phone')->nullable();
             $table->string('homepage')->nullable();
-//            $table->string('category')->nullable();
+            $table->string('category')->nullable();
 //            $table->string('review')->nullable();
 //            $table->string('영업일')->nullable();
             $table->string('address');
@@ -29,7 +31,6 @@ class CreateShopsTable extends Migration
             $table->point('location',4326); // google map 3857
 //            $table->foreignId('user_id')->unique()->constrained(); //TODO 현재 대량 입력을 위해 임시로 제한 안둠.
             $table->foreignId('user_id')->constrained();
-            $table->timestamps();
 
             $table->spatialIndex('location');
         });
