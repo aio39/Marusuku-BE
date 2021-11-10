@@ -20,7 +20,7 @@ Route::post('/login','LoginController@login');
 Route::post('/logout','LoginController@logout');
 
 
-Route::resource('/places','PlaceController' );
+Route::resource('/shops','ShopController' );
 
 Route::get('/geocode',function (Request $request){
     if($request->query('address') == null){
@@ -57,9 +57,4 @@ Route::post('/user',function(Request $request){
         : response()->json([],500);
 });
 
-Route::any('/test',function (Request  $request){
-//    dd(Storage::get('places.csv'));
-//    dd(file('../storage/app/places.csv'));
-    $csv = array_map('str_getcsv', file('../storage/app/places.csv'));
-    dd($csv);
-});
+
