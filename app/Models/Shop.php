@@ -15,7 +15,7 @@ class Shop extends Model
     use SpatialTrait;
 
     protected $fillable = [
-        'name','desc','address','location','bookmark','user_id'
+        'name','desc','phone', 'homepage','address','address2','location','user_id'
     ];
 
 //    protected $hidden = ['location'];
@@ -30,8 +30,5 @@ class Shop extends Model
         'bookmark' => 'bool',
         'user_id'=>'int'
     ];
-
-
-
 
 }

@@ -19,8 +19,7 @@ use App\Models\User;
 Route::post('/login','LoginController@login');
 Route::post('/logout','LoginController@logout');
 
-
-Route::resource('/shops','ShopController' );
+Route::get('/shops/find','ShopController@find');
 
 Route::get('/geocode',function (Request $request){
     if($request->query('address') == null){
@@ -43,6 +42,7 @@ Route::get('/geocode',function (Request $request){
 
 Route::group(['middleware'=>'auth:sanctum'],function(){
 //    Route::get('/user', function (Request $request) {return $request->user();});
+    Route::middleware('point')->apiResource('/shops','ShopController' );
     Route::apiResource('/user','UserController');
     Route::post('/user/register/{user}','UserController@register');
 });

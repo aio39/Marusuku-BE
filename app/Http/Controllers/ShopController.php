@@ -20,24 +20,40 @@ class ShopController extends Controller
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function index(Request $request)
+    public function find(Request $request)
     {
-//        return Shop::orderByDesc('id')->get();
 
+        // Bounds
         $t = $request->t;
         $b = $request->b;
         $r = $request->r;
         $l = $request->l;
 
+        $polygon = $t.' '.$l.','.$t.' '. $r.','.$b .' '.$r.','.$b.' '. $l.','.$t.' '. $l;
+
+
 //        return Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((? ?,? ?,? ?,? ?,? ?))',4326),location)",[$t, $l,$t, $r,$b ,$r,$b, $l,$t, $l])->get();
 
-
-        $polygon = $t.' '.$l.','.$t.' '. $r.','.$b .' '.$r.','.$b.' '. $l.','.$t.' '. $l;
-        $result= Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((".$polygon."))',4326),lacation)")->take(20)->get();
+        $result= Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((".$polygon."))',4326),location)")->take(20)->get();
 
         return $result;
+    }
 
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function index(Request $request)
+    {
+
+
+        $shop= Shop::query()->where('user_id','=',Auth::id())->take(1)->get();
+
+        return $shop
+            ? response()->json($shop[0],201)
+            : response()->json([],500);
+
+        return $result;
     }
 
 
@@ -47,7 +63,6 @@ class ShopController extends Controller
      */
     public function store(ShopRequest $request)
     {
-//        dd($request->all());
         $request->merge([
             'user_id' =>Auth::id()
         ]);
@@ -58,16 +73,6 @@ class ShopController extends Controller
             : response()->json([],500);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Shop  $shop
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Shop $shop)
-    {
-        //
-    }
 
 
     /**

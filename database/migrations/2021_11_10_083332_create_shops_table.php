@@ -27,7 +27,8 @@ class CreateShopsTable extends Migration
             $table->integer('score_total')->default(0);
             $table->integer('score_count')->default(0);
             $table->point('location',4326); // google map 3857
-            $table->foreignId('user_id')->unique()->constrained();
+//            $table->foreignId('user_id')->unique()->constrained(); //TODO 현재 대량 입력을 위해 임시로 제한 안둠.
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
 
             $table->spatialIndex('location');
