@@ -30,7 +30,7 @@ class CreateMenusTable extends Migration
 
             $table->foreignId('shop_id')->constrained();
 
-            $table->index(['name','shop_id']);
+            $table->unique(['name','shop_id']);
         });
     }
 

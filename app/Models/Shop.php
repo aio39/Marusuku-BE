@@ -31,4 +31,9 @@ class Shop extends Model
         'user_id'=>'int'
     ];
 
+
+    public function menus(){
+        return $this->hasMany('App\Models\Menu');
+    }
+
 }

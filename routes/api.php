@@ -17,7 +17,6 @@ use App\Models\User;
 */
 
 Route::post('/login','LoginController@login');
-Route::post('/logout','LoginController@logout');
 
 Route::get('/shops/find','ShopController@find');
 
@@ -40,11 +39,19 @@ Route::get('/geocode',function (Request $request){
 });
 
 
+Route::prefix('shops')->group(function (){
+    Route::apiResource('','ShopController')->parameters([''=>'shop']);
+    Route::prefix('{shop}/menu')->group(function (){
+        Route::apiResource('','MenuController' )->parameters([''=>'menu']);
+    });
+});
+
 Route::group(['middleware'=>'auth:sanctum'],function(){
 //    Route::get('/user', function (Request $request) {return $request->user();});
-    Route::middleware('point')->apiResource('/shops','ShopController' );
-    Route::apiResource('/user','UserController');
-    Route::post('/user/register/{user}','UserController@register');
+//    Route::middleware('point')->apiResource('/shops','ShopController' );
+    Route::post('/logout','LoginController@logout');
+    Route::apiResource('user','UserController');
+    Route::post('user/register/{user}','UserController@register');
 });
 
 Route::post('/user',function(Request $request){
