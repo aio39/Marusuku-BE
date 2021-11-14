@@ -46,13 +46,16 @@ Route::prefix('shops')->group(function (){
     });
 });
 
-Route::group(['middleware'=>'auth:sanctum'],function(){
+Route::prefix('users')->middleware(['auth:sanctum'])->group(function(){
+    Route::post('/logout','LoginController@logout');
+    Route::apiResource('','UserController')->parameters([''=>'user']);
+    Route::prefix('{user}/subscribes')->group(function (){
+        Route::apiResource('','SubscribeController' )->parameters([''=>'subscribe']);
+    });
+});
+//    Route::post('/register/{user}','UserController@register');
 //    Route::get('/user', function (Request $request) {return $request->user();});
 //    Route::middleware('point')->apiResource('/shops','ShopController' );
-    Route::post('/logout','LoginController@logout');
-    Route::apiResource('user','UserController');
-    Route::post('user/register/{user}','UserController@register');
-});
 
 Route::post('/user',function(Request $request){
     $data = $request->all();

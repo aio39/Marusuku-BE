@@ -59,4 +59,27 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }
+
+
+    public function subscribes(){
+        return $this->belongsToMany('App\Models\Menu','subscribes','user_id','menu_id')->using('App\Models\Subscribe');
+    }
+
+    public function reviews(){
+        return $this->belongsToMany('App\Models\Menu','reviews','user_id','menu_id')->using('App\Models\Review');
+    }
+
+    public function pay_tokens(){
+        return $this->belongsToMany('App\Models\Menu','pay_tokens','user_id','menu_id')->using('App\Models\PayToken');
+    }
+
+    public function use_histories(){
+        return $this->belongsToMany('App\Models\Menu','use_histories','user_id','menu_id')
+            ->using('App\Models\UseHistory')
+            ->withPivot('created_at',
+                'updated_at',
+                'user_id',
+                'menu_id',
+                'shop_id',);
+    }
 }

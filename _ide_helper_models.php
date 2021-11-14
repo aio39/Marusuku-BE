@@ -83,28 +83,9 @@ namespace App\Models{
 /**
  * App\Models\Review
  *
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string $name
- * @property string $content
- * @property int $score
- * @property int $user_id
- * @property int $menu_id
- * @property int $shop_id
- * @method static \Database\Factories\ReviewFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Review newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Review newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Review query()
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereMenuId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereScore($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereShopId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereUserId($value)
  */
 	class Review extends \Eloquent {}
 }
@@ -169,6 +150,17 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Subscribe
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe query()
+ */
+	class Subscribe extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\UseHistory
  *
  * @property int $id
@@ -208,12 +200,20 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $pay_tokens
+ * @property-read int|null $pay_tokens_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
  * @property-read int|null $permissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $reviews
+ * @property-read int|null $reviews_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
  * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $subscribes
+ * @property-read int|null $subscribes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $use_histories
+ * @property-read int|null $use_histories_count
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
