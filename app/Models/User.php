@@ -14,6 +14,8 @@ class User extends Authenticatable
     // ! HasRoles -> Permission
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
+    protected $with = ['shop'];
+
 
     protected $table = 'users';
 
@@ -60,6 +62,10 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($value);
     }
 
+
+    public function shop(){
+        return $this->hasOne('App\Models\Shop');
+    }
 
     public function subscribes(){
         return $this->belongsToMany('App\Models\Menu','subscribes','user_id','menu_id')->using('App\Models\Subscribe');

@@ -17,6 +17,7 @@ use App\Models\User;
 */
 
 Route::post('/login','LoginController@login');
+Route::get('/logout','LoginController@logout');
 
 Route::get('/shops/find','ShopController@find');
 
@@ -41,21 +42,18 @@ Route::get('/geocode',function (Request $request){
 
 Route::prefix('shops')->group(function (){
     Route::apiResource('','ShopController')->parameters([''=>'shop']);
-    Route::prefix('{shop}/menu')->group(function (){
+    Route::prefix('{shop}/menus')->group(function (){
         Route::apiResource('','MenuController' )->parameters([''=>'menu']);
     });
 });
 
 Route::prefix('users')->middleware(['auth:sanctum'])->group(function(){
-    Route::post('/logout','LoginController@logout');
     Route::apiResource('','UserController')->parameters([''=>'user']);
     Route::prefix('{user}/subscribes')->group(function (){
         Route::apiResource('','SubscribeController' )->parameters([''=>'subscribe']);
     });
 });
-//    Route::post('/register/{user}','UserController@register');
-//    Route::get('/user', function (Request $request) {return $request->user();});
-//    Route::middleware('point')->apiResource('/shops','ShopController' );
+
 
 Route::post('/user',function(Request $request){
     $data = $request->all();

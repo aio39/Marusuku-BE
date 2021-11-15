@@ -25,6 +25,8 @@ class CreateMenusTable extends Migration
             $table->smallInteger('limit_month')->nullable();
             $table->smallInteger('limit_year')->nullable();
 
+
+
             $table->string('desc')->nullable();
             $table->string('img')->nullable();
 

@@ -19,9 +19,11 @@ class CreateUseHistoriesTable extends Migration
 
             $table->integer('discount')->default(0);
 
+
             $table->foreignId('user_id')->constrained();
             $table->foreignId('menu_id')->constrained();
             $table->foreignId('shop_id')->constrained();
+
         });
     }
 

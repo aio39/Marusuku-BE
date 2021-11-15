@@ -31,6 +31,10 @@ class Shop extends Model
         'user_id'=>'int'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 
     public function menus(){
         return $this->hasMany('App\Models\Menu');
