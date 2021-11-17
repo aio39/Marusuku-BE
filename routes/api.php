@@ -52,6 +52,12 @@ Route::prefix('users')->middleware(['auth:sanctum'])->group(function(){
     Route::prefix('{user}/subscribes')->group(function (){
         Route::apiResource('','SubscribeController' )->parameters([''=>'subscribe']);
     });
+    Route::prefix('{user}/pay_tokens')->group(function (){
+        Route::apiResource('','PayTokenController' )->parameters([''=>'payToken']);
+    });
+    Route::prefix('{user}/use_histories')->group(function (){
+        Route::apiResource('','UseHistoryController' )->parameters([''=>'useHistory']);
+    });
 });
 
 

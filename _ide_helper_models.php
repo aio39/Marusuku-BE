@@ -29,6 +29,10 @@ namespace App\Models{
  * @property int $shop_id
  * @property int $vanish
  * @property string|null $vanish_at
+ * @property int|null $limit_day_amount
+ * @property int|null $limit_week_amount
+ * @property int|null $limit_month_amount
+ * @property int|null $limit_year_amount
  * @property-read \App\Models\Shop $shop
  * @method static \Database\Factories\MenuFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu newModelQuery()
@@ -40,9 +44,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereImg($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereLimitDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Menu whereLimitDayAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereLimitMonth($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Menu whereLimitMonthAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereLimitWeek($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Menu whereLimitWeekAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereLimitYear($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Menu whereLimitYearAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereShopId($value)
@@ -96,19 +104,21 @@ namespace App\Models{
  *
  * @property \Grimzy\LaravelMysqlSpatial\Types\Point   $location
  * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $name
  * @property string|null $desc
  * @property string|null $phone
  * @property string|null $homepage
+ * @property string|null $category
  * @property string $address
  * @property string|null $address2
  * @property int $score_total
  * @property int $score_count
  * @property int $user_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $menus
  * @property-read int|null $menus_count
+ * @property-read \App\Models\User $user
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop comparison($geometryColumn, $geometry, $relationship)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop contains($geometryColumn, $geometry)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop crosses($geometryColumn, $geometry)
@@ -132,6 +142,7 @@ namespace App\Models{
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop query()
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereAddress($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereAddress2($value)
+ * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereCategory($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereCreatedAt($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereDesc($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereHomepage($value)
@@ -152,9 +163,29 @@ namespace App\Models{
 /**
  * App\Models\Subscribe
  *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $continue
+ * @property string $settlement_date
+ * @property string $end_date
+ * @property int $user_id
+ * @property int $menu_id
+ * @property int $shop_id
+ * @property-read \App\Models\Menu $menu
+ * @property-read \App\Models\Shop $shop
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereContinue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereMenuId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereSettlementDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereShopId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereUserId($value)
  */
 	class Subscribe extends \Eloquent {}
 }
@@ -198,6 +229,7 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $shop_id
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $pay_tokens
@@ -208,6 +240,7 @@ namespace App\Models{
  * @property-read int|null $reviews_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
  * @property-read int|null $roles_count
+ * @property-read \App\Models\Shop|null $shop
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $subscribes
  * @property-read int|null $subscribes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
@@ -228,6 +261,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereShopId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  */
 	class User extends \Eloquent {}
