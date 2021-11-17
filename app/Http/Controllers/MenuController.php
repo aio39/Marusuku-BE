@@ -6,6 +6,7 @@ use App\Models\Menu;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
 {
@@ -30,8 +31,14 @@ class MenuController extends Controller
      */
     public function store(Request $request, Shop $shop)
     {
+        $shop_id = $shop->id;
+        //  복합 유니크 검증
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' =>  ['required','max:255',
+                Rule::unique('menus', 'name')->where(function ($query) use ($shop_id) {
+                    return $query->where('shop_id', $shop_id);
+                })
+            ],
             'price' => 'required',
         ]);
 
