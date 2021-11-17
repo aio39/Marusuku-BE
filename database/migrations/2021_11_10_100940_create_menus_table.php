@@ -18,7 +18,7 @@ class CreateMenusTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->integer('price');
-            $table->tinyInteger('cycle_month')->default(0);
+            $table->tinyInteger('cycle_month')->default(1);
 
             $table->smallInteger('limit_day')->nullable();
             $table->smallInteger('limit_week')->nullable();

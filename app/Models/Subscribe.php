@@ -10,19 +10,26 @@ class Subscribe extends Pivot
 
     protected $fillable = [
     'settlement_date',
+    'end_date',
     'continue',
     'user_id',
     'menu_id',
     'shop_id',
     ];
 
+//    protected $with = ['shops','menus'];
+
     protected $attributes = [
         'continue' => true,
     ];
 
 
-    public function shops(){
+    public function shop(){
         return $this->belongsTo('App\Models\Shop','shop_id','id');
+    }
+
+    public function menu(){
+        return $this->belongsTo('App\Models\Menu','menu_id','id');
     }
 
 }

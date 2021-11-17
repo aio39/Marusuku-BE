@@ -19,6 +19,7 @@ class CreateSubscribesTable extends Migration
             $table->boolean('continue')->default(true);
 
             $table->timestamp('settlement_date');
+            $table->timestamp('end_date');
 
             $table->foreignId('user_id')
                 ->constrained()->onDelete('cascade');

@@ -31,10 +31,10 @@ class ShopController extends Controller
 
         $polygon = $t.' '.$l.','.$t.' '. $r.','.$b .' '.$r.','.$b.' '. $l.','.$t.' '. $l;
 
-
+        $take = $request->take;
 //        return Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((? ?,? ?,? ?,? ?,? ?))',4326),location)",[$t, $l,$t, $r,$b ,$r,$b, $l,$t, $l])->get();
 
-        $result= Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((".$polygon."))',4326),location)")->take(20)->get();
+        $result= Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((".$polygon."))',4326),location)")->take($take ? $take : 50)->get();
 
         return $result;
     }
@@ -45,7 +45,6 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
-
 
         $shop= Shop::query()->where('user_id','=',Auth::id())->take(1)->get();
 
@@ -73,7 +72,10 @@ class ShopController extends Controller
             : response()->json([],500);
     }
 
-
+    public function show(Shop $shop)
+    {
+        return response()->json($shop);
+    }
 
     /**
      * Update the specified resource in storage.

@@ -18,7 +18,7 @@ class SubscribeController extends Controller
      */
     public function index(Request $request,$user_id)
     {
-        return Subscribe::query()->with('shops')->where('user_id','=',Auth::id())
+        return Subscribe::query()->with(['shop','menu'])->where('user_id','=',Auth::id())
             ->when($request->shop_id,function ($query, $shop_id) {
                 return $query->where('shop_id', $shop_id);
             })->get();
@@ -36,23 +36,21 @@ class SubscribeController extends Controller
         $menu_id = $request->menu_id;
 
         $menu = Menu::query()->findOrFail($menu_id);
-//        $user =  User::find(Auth::id());
-//        $user->subscribes()->attach($menu_id,['settlement_times'=> Carbon::now()->addMonth(1),'shop_id'=>$menu->shop_id]);
-        if($menu == null){
-            return response()->json([],500);
-        }
-//        dd(Carbon::now()->addMonth(1)->toDateTimeString());
+
+//        if($menu == null){
+//            return response()->json([],500);
+//        }
+        $now =Carbon::now();
 
         $subscibe = new Subscribe;
         $subscibe->user_id = Auth::id();
         $subscibe->menu_id = $menu_id;
-        $subscibe->settlement_date = Carbon::now()->addMonth(1)->toDateTimeString();
+        $subscibe->settlement_date = $now->addMonth($menu->cycle_month)->toDateTimeString();
+        $subscibe->end_date = $now->addMonth(1)->subMinute(1)->toDateTimeString();
         $subscibe->shop_id = $menu->shop_id;
-        $subscibe->save();
-        dd($subscibe);
-//        Subscribe::query()->create();
+        $subscibe->saveOrFail();
 
-
+        return $subscibe;
     }
 
     /**
@@ -64,7 +62,7 @@ class SubscribeController extends Controller
     public function show(Request $request,$user_id,  $subscribe_id)
     {
 
-        $subscribe = Subscribe::with('shops')->where('id',"=",$subscribe_id)->firstOrFail();
+        $subscribe = Subscribe::with(['shop','menu'])->where('id',"=",$subscribe_id)->firstOrFail();
         return response()->json($subscribe,200);
     }
 

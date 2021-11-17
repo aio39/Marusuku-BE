@@ -23,6 +23,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+//        validator::extend('uniqueFirstAndLastName', function ($attribute, $value, $parameters, $validator) {
+//            $count = DB::table('people')->where('firstName', $value)
+//                ->where('lastName', $parameters[0])
+//                ->count();
+//
+//            return $count === 0;
+//        });
     }
 }
