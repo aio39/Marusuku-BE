@@ -32,5 +32,14 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('shop-owner', function ($user, $shop) {
             return $user->id === $shop->user_id ? Response::allow() : Response::deny('가게 오너가 아닙니다');
         });
+
+
+//            원래는 localhost 일 경우에만 접근 가능함.
+        Gate::define('viewWebSocketsDashboard', function ($user = null) {
+            return true;
+//            return in_array($user->email, [
+//                //
+//            ]);
+        });
     }
 }

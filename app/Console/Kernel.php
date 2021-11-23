@@ -25,6 +25,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+//        ws 통계 지우기`
+//        $schedule->command('websockets:clean')->daily();
     }
 
     /**

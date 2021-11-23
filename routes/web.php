@@ -2,22 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These![](../storage/app/avatars/1.webp)
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 
 //Route::any('{all}', function () {
 //    return view('index');
 //})->where('all', '^(?!storage).+');
 
-Route::get('{all}', function () {
-    return view('index');
-})->where(['all'=>'.*']);
+//Route::get('{all}', function () {
+//    return view('index');
+//})->where(['all'=>'.*']);
+
+
+Route::get('/broadcast',function (){
+    broadcast(new \App\Events\Hello());
+//    return "true";
+});
