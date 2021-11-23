@@ -11,8 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    // ! HasRoles -> Permission
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $with = ['shop'];
 
@@ -64,7 +63,7 @@ class User extends Authenticatable
 
 
     public function shop(){
-        return $this->hasOne('App\Models\Shop');
+        return $this->hasOne('App\Models\Shop','user_id')->limit(1);
     }
 
     public function subscribes(){
