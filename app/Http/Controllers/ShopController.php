@@ -23,39 +23,24 @@ class ShopController extends Controller
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function find(Request $request)
-    {
-
-        // Bounds
-        $t = $request->t;
-        $b = $request->b;
-        $r = $request->r;
-        $l = $request->l;
-
-        $polygon = $t.' '.$l.','.$t.' '. $r.','.$b .' '.$r.','.$b.' '. $l.','.$t.' '. $l;
-
-        $take = $request->take;
-//        return Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((? ?,? ?,? ?,? ?,? ?))',4326),location)",[$t, $l,$t, $r,$b ,$r,$b, $l,$t, $l])->get();
-
-        $result= Shop::query()->whereRaw("ST_Contains(ST_GeomFromText('Polygon((".$polygon."))',4326),location)")->take($take ? $take : 50)->get();
-
-        return $result;
-    }
-
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
     public function index(Request $request)
     {
         $query = Shop::query();
+
+        if ($request->t){
+            $t = $request->t;
+            $b = $request->b;
+            $r = $request->r;
+            $l = $request->l;
+
+            $polygon = $t.' '.$l.','.$t.' '. $r.','.$b .' '.$r.','.$b.' '. $l.','.$t.' '. $l;
+            $query->whereRaw("ST_Contains(ST_GeomFromText('Polygon((".$polygon."))',4326),location)");
+        }
 
         $query = applyDefaultFSW($request,$query);
 
         return  new ShopCollection($query->paginate($request->get('per_page') ?: 50));
 
-//        $shop= Shop::query()->where('user_id','=',Auth::id())->take(1)->get();
-//
 //        return $shop
 //            ? response()->json($shop[0],201)
 //            : response()->json([],500);

@@ -35,7 +35,6 @@ class MenuController extends Controller
             $query->where('vanish','!=',1);
         }
 
-
         return  new MenuCollection($query->paginate($request->get('per_page') ?: 50));
 
     }

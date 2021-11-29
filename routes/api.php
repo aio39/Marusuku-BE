@@ -39,18 +39,8 @@ Route::get('/geocode',function (Request $request){
     }
 });
 
-
-//Route::prefix('shops')->group(function (){
-//    Route::apiResource('','ShopController')->parameters([''=>'shop']);
-//    Route::prefix('{shop}/menus')->group(function (){
-//        Route::apiResource('','MenuController' )->parameters([''=>'menu']);
-//    });
-//});
-
-Route::get('/shops/find','ShopController@find');
 Route::apiResource('/shop','ShopController');
 Route::apiResource('/menu','MenuController');
-
 
 
 Route::prefix('users')->middleware(['auth:sanctum'])->group(function(){
