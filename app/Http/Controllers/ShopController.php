@@ -48,6 +48,8 @@ class ShopController extends Controller
 
         $shop= Shop::query()->where('user_id','=',Auth::id())->take(1)->get();
 
+
+
         return $shop
             ? response()->json($shop[0],201)
             : response()->json([],500);

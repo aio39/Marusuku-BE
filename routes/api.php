@@ -20,7 +20,6 @@ Route::get('/test',function (){ return 'Hello World';});
 Route::post('/login','LoginController@login');
 Route::get('/logout','LoginController@logout');
 
-Route::get('/shops/find','ShopController@find');
 
 Route::get('/geocode',function (Request $request){
     if($request->query('address') == null){
@@ -41,12 +40,18 @@ Route::get('/geocode',function (Request $request){
 });
 
 
-Route::prefix('shops')->group(function (){
-    Route::apiResource('','ShopController')->parameters([''=>'shop']);
-    Route::prefix('{shop}/menus')->group(function (){
-        Route::apiResource('','MenuController' )->parameters([''=>'menu']);
-    });
-});
+//Route::prefix('shops')->group(function (){
+//    Route::apiResource('','ShopController')->parameters([''=>'shop']);
+//    Route::prefix('{shop}/menus')->group(function (){
+//        Route::apiResource('','MenuController' )->parameters([''=>'menu']);
+//    });
+//});
+
+Route::get('/shops/find','ShopController@find');
+Route::apiResource('/shop','ShopController');
+Route::apiResource('/menu','MenuController');
+
+
 
 Route::prefix('users')->middleware(['auth:sanctum'])->group(function(){
     Route::apiResource('','UserController')->parameters([''=>'user']);

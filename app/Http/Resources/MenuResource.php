@@ -26,6 +26,7 @@ class MenuResource extends JsonResource
             'desc'=> $this->desc,
             'img'=> $this->img,
             'shop_id'=> $this->shop_id,
+            'shop'=> new ShopResource($this->whenLoaded('shop')) ,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'vanish'=>$this->vanish,
