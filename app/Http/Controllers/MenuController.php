@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\Helpers;
 use App\Http\Resources\MenuCollection;
 use App\Http\Resources\MenuResource;
 use App\Models\Menu;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use function App\Helper\applyDefaultFSW;
 
 class MenuController extends Controller
 {
@@ -18,37 +20,12 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Shop $shop)
+    public function index(Request $request)
     {
 //        $per = $request->per;
         $query = Menu::query();
 
-        if($request->sort){
-            $sorts =  explode(',' ,$request->input('sort',''));
-            foreach ($sorts as $sortColumn){
-                $sortDirection = Str::startsWith($sortColumn,'-') ? 'desc':'asc';
-                $sortColumn = ltrim($sortColumn,'-');
-                $query->orderBy($sortColumn,$sortDirection);
-            }
-        }
-
-//        ?filter=category:food,id:2
-        $query->when(request()->filled('filter'), function ($query) {
-           $filters = explode(',',request('filter'));
-           foreach ($filters as $filter){
-               [$criteria,$value] = explode(':',$filter);
-               $query->where($criteria,$value);
-           }
-           return $query;
-        });
-
-        $query->when(request()->filled('with'), function ($query) {
-            $withs = explode(',',request('with'));
-            if($withs){
-                  $query->with($withs);
-            }
-            return $query;
-        });
+        $query = applyDefaultFSW($request,$query);
 
         if($request->vanish === 'all'){ // 모든 상품
             $query->where('vanish','!=',1);
@@ -59,10 +36,8 @@ class MenuController extends Controller
         }
 
 
-//        return  MenuResource::collection($query->paginate($request->get('per_page') ?: 50));
         return  new MenuCollection($query->paginate($request->get('per_page') ?: 50));
 
-//        return $shop->menus()->where('vanish','!=',1)  ->paginate($per ?? 50);
     }
 
 

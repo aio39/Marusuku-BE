@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MenuCollection;
+use App\Http\Resources\ShopCollection;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 use App\Http\Requests\ShopRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function App\Helper\applyDefaultFSW;
 
 class ShopController extends Controller
 {
@@ -45,16 +48,19 @@ class ShopController extends Controller
      */
     public function index(Request $request)
     {
+        $query = Shop::query();
 
-        $shop= Shop::query()->where('user_id','=',Auth::id())->take(1)->get();
+        $query = applyDefaultFSW($request,$query);
 
+        return  new ShopCollection($query->paginate($request->get('per_page') ?: 50));
 
-
-        return $shop
-            ? response()->json($shop[0],201)
-            : response()->json([],500);
-
-        return $result;
+//        $shop= Shop::query()->where('user_id','=',Auth::id())->take(1)->get();
+//
+//        return $shop
+//            ? response()->json($shop[0],201)
+//            : response()->json([],500);
+//
+//        return $result;
     }
 
 

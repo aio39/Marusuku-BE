@@ -4,11 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class MenuCollection extends ResourceCollection
+class ShopCollection extends ResourceCollection
 {
-//        자동으로 Menu + Resource 파일을 찾음.
-//    public $collects = 'app\Http\Resource\MenuResource';
-
     /**
      * Transform the resource collection into an array.
      *
@@ -23,7 +20,5 @@ class MenuCollection extends ResourceCollection
 //                'self'=> 'link-value',
             ]
         ];
-
-//        return parent::toArray($request);
     }
 }
