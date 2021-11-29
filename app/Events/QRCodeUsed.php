@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class QRCodeUsed
+class QRCodeUsed implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,9 +19,16 @@ class QRCodeUsed
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user,$uuid)
     {
-        //
+        $this->user = $user;
+        $this->uuid = $uuid;
+    }
+
+    public function  broadcastWith(){
+        return [
+            'data'=>'ok'
+        ];
     }
 
     /**
@@ -31,6 +38,6 @@ class QRCodeUsed
      */
     public function broadcastOn()
     {
-        return new Channel('channel');
+        return new PrivateChannel('qrcode.'.$this->order_id);
     }
 }

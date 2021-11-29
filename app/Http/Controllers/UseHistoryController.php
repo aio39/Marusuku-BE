@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\QRCodeUsed;
 use App\Models\PayToken;
 use App\Models\Shop;
 use App\Models\UseHistory;
@@ -49,8 +50,10 @@ class UseHistoryController extends Controller
             $useHistory->menu_id = $payToken->menu_id;
             $useHistory->shop_id = $payToken->shop_id;
             $useHistory->saveOrFail();
+            broadcast(new QRCodeUsed(Auth::user(),$request->uuid));
             return response()->json($useHistory->refresh(),200);
         }
+
         return response()->json(["message"=>"옳바르지 않는 토큰입니다."],401);
     }
 
@@ -62,7 +65,7 @@ class UseHistoryController extends Controller
      */
     public function show(UseHistory $useHistory)
     {
-        //
+        return response()->json($useHistory);
     }
 
 

@@ -18,6 +18,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 
-Broadcast::channel('qrcode.{orderId}', function ($user, $orderId) {
-    return $user->id === Order::findOrNew($orderId)->user_id;
+Broadcast::channel('qrcode.{uuid}', function ($user, $uuid) {
+    return $user->id === \App\Models\PayToken::whereUuid($uuid)->firstOrFail()->user_id;
 });
