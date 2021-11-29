@@ -8,6 +8,7 @@ use App\Models\UseHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use function App\Helper\applyDefaultFSW;
 
 class UseHistoryController extends Controller
 {
@@ -16,9 +17,14 @@ class UseHistoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($request)
     {
-        //
+        $query = UseHistory::query();
+        $query->with(['shop','menu']);
+
+        $query = applyDefaultFSW($request,$query);
+
+        return  $query->paginate($request->get('per_page') ?: 50);
     }
 
 
@@ -28,7 +34,7 @@ class UseHistoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $userId)
+    public function store(Request $request)
     {
         $shop = Shop::query()->findOrFail($request->shop_id);
         # 바코드를 찍는 계정이 실재 가게 계정인지 확인합니다.

@@ -13,11 +13,4 @@ class PayToken extends Model
                             'user_id',
                             'menu_id',
                             'shop_id',];
-
-
-
-
-
-
-
 }

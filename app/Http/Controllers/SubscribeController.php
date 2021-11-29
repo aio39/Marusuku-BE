@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use function App\Helper\applyDefaultFSW;
 
 class SubscribeController extends Controller
 {
@@ -16,12 +17,19 @@ class SubscribeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request,$user_id)
+    public function index(Request $request)
     {
-        return Subscribe::query()->with(['shop','menu'])->where('user_id','=',Auth::id())
-            ->when($request->shop_id,function ($query, $shop_id) {
-                return $query->where('shop_id', $shop_id);
-            })->get();
+//        return Subscribe::query()->with(['shop','menu'])->where('user_id','=',Auth::id())
+//            ->when($request->shop_id,function ($query, $shop_id) {
+//                return $query->where('shop_id', $shop_id);
+//            })->get();
+
+        $query = Subscribe::query();
+        $query->with(['shop','menu']);
+
+        $query = applyDefaultFSW($request,$query);
+
+        return  $query->paginate($request->get('per_page') ?: 50);
     }
 
     /**
@@ -30,16 +38,13 @@ class SubscribeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,User $user)
+    public function store(Request $request)
     {
 
         $menu_id = $request->menu_id;
 
         $menu = Menu::query()->findOrFail($menu_id);
 
-//        if($menu == null){
-//            return response()->json([],500);
-//        }
         $now =Carbon::now();
 
         $subscibe = new Subscribe;
@@ -59,7 +64,7 @@ class SubscribeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request,$user_id,  $subscribe_id)
+    public function show(Request $request, $subscribe_id)
     {
 
         $subscribe = Subscribe::with(['shop','menu'])->where('id',"=",$subscribe_id)->firstOrFail();
@@ -73,7 +78,7 @@ class SubscribeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $user_id, Subscribe  $subscribe)
+    public function update(Request $request, Subscribe  $subscribe)
     {
        $result =  $subscribe->updateOrFail(['continue',$request->continue]);
 

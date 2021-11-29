@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use function App\Helper\applyDefaultFSW;
 
 class PayTokenController extends Controller
 {
@@ -18,7 +19,15 @@ class PayTokenController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        $query = PayToken::query();
+//        $query->with(['shop','menu']);
+        if($request->has('start')){
+           $query->whereBetween('created_at',[$request->start,$request->end]);
+        }
+
+        $query = applyDefaultFSW($request,$query);
+
+        return  $query->paginate($request->get('per_page') ?: 50);
     }
 
 

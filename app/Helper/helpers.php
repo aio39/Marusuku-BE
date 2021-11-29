@@ -31,6 +31,16 @@ if (! function_exists('applyDefaultFSW')) {
             return $query;
         });
 
+        $query->when(request()->filled('start') && request()->filled('end'), function ($query) {
+            $query->whereBetween('created_at',[request('start'),request('end')]);
+            return $query;
+        });
+
+        $query->when(request()->filled('up-start') && request()->filled('up-end'), function ($query) {
+            $query->whereBetween('created_at',[request('up-start'),request('up-end')]);
+            return $query;
+        });
+
         return $query;
     }
 }

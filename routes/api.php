@@ -41,19 +41,21 @@ Route::get('/geocode',function (Request $request){
 
 Route::apiResource('/shop','ShopController');
 Route::apiResource('/menu','MenuController');
+Route::apiResource('/subscribe','SubscribeController');
+Route::apiResource('/use_histories','UseHistoryController');
 
 
 Route::prefix('users')->middleware(['auth:sanctum'])->group(function(){
     Route::apiResource('','UserController')->parameters([''=>'user']);
-    Route::prefix('{user}/subscribes')->group(function (){
-        Route::apiResource('','SubscribeController' )->parameters([''=>'subscribe']);
-    });
+//    Route::prefix('{user}/subscribes')->group(function (){
+//        Route::apiResource('','SubscribeController' )->parameters([''=>'subscribe']);
+//    });
     Route::prefix('{user}/pay_tokens')->group(function (){
         Route::apiResource('','PayTokenController' )->parameters([''=>'payToken']);
     });
-    Route::prefix('{user}/use_histories')->group(function (){
-        Route::apiResource('','UseHistoryController' )->parameters([''=>'useHistory']);
-    });
+//    Route::prefix('{user}/use_histories')->group(function (){
+//        Route::apiResource('','UseHistoryController' )->parameters([''=>'useHistory']);
+//    });
 });
 
 
