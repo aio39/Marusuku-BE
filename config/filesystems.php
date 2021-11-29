@@ -50,7 +50,14 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
+            'scheme'=>'http',
+//            TODO HTTPS
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+//            'cache' => [
+//                'store' => 'memcached',
+//                'expire' => 600,
+//                'prefix' => 'cache-prefix',
+//            ], // TODO 캐싱 설정
         ],
 
     ],

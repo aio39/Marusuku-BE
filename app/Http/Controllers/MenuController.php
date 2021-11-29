@@ -9,6 +9,7 @@ use App\Models\Menu;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use function App\Helper\applyDefaultFSW;
@@ -46,10 +47,11 @@ class MenuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Shop $shop)
+    public function store(Request $request)
     {
-        $shop_id = $shop->id;
-        //  복합 유니크 검증
+        $shop_id = $request->shop_id;
+
+        // NOTE 복합 유니크 검증
         $validatedData = $request->validate([
             'name' =>  ['required','max:255',
                 Rule::unique('menus', 'name')->where(function ($query) use ($shop_id) {
@@ -58,10 +60,20 @@ class MenuController extends Controller
             ],
             'price' => 'required',
         ]);
-
+        $shop = Shop::query()->find($shop_id);
         Gate::authorize('shop-owner', $shop);
 
-        $menu = $shop->menus()->create($request->all());
+
+        $path = $request->file('image')->store('menu', 's3');
+
+        $requestData = $request->except('image');
+        $requestData['img'] = $path;
+
+        $menu = $shop->menus()->create($requestData);
+
+//        Storage::disk('s3')->put('avatars/1', $request->file('image'));
+
+//        $exists = Storage::disk('s3')->url('file.jpg');
 
         return  response()->json($menu,201);
     }

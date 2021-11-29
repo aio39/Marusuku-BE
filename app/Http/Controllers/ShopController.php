@@ -58,7 +58,13 @@ class ShopController extends Controller
         $request->merge([
             'user_id' =>Auth::id()
         ]);
-        $shop = Shop::create($request->all()); // create 이용할려면 Model fillable 설정
+
+        $path = $request->file('image')->store('shop', 's3');
+
+        $requestData = $request->except('image');
+        $requestData['img'] = $path;
+
+        $shop = Shop::create($requestData); // create 이용할려면 Model fillable 설정
 
         return $shop
             ? response()->json($shop,201)

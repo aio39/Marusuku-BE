@@ -39,9 +39,9 @@ Route::get('/geocode',function (Request $request){
     }
 });
 
-Route::apiResource('/shop','ShopController');
-Route::apiResource('/menu','MenuController');
-Route::apiResource('/subscribe','SubscribeController');
+Route::apiResource('/shops','ShopController');
+Route::apiResource('/menus','MenuController');
+Route::apiResource('/subscribes','SubscribeController');
 Route::apiResource('/use_histories','UseHistoryController');
 
 
