@@ -35,17 +35,24 @@ class ShopController extends Controller
 
             $polygon = $t.' '.$l.','.$t.' '. $r.','.$b .' '.$r.','.$b.' '. $l.','.$t.' '. $l;
             $query->whereRaw("ST_Contains(ST_GeomFromText('Polygon((".$polygon."))',4326),location)");
+        } elseif ($request->distance and  $request->lng and $request->lat){
+            $query->leftJoin(  DB::raw('
+            (select ST_Distance(
+                    ST_SRID(Point('.$request->lng.','.$request->lat.'),4326),
+                    ST_SRID(s.location,4326)
+                    ) as dis , s.id
+                    from shops as s
+                    ) as d'), function ($join){
+                $join->on('d.id','=','shops.id');
+            } );
+            $query->where('d.dis','<',$request->distance);
+            if(!$request->has('sort')){ // 다른 sort 조건이 없으면 가까운순 기본 적용
+                $query->orderBy('d.dis');
+            }
         }
-
         $query = applyDefaultFSW($request,$query);
 
         return  new ShopCollection($query->paginate($request->get('per_page') ?: 50));
-
-//        return $shop
-//            ? response()->json($shop[0],201)
-//            : response()->json([],500);
-//
-//        return $result;
     }
 
 
