@@ -12,12 +12,13 @@ use Illuminate\Support\Facades\Broadcast;
 | used to check if an authenticated user can listen to the channel.
 |
 */
+//
+//Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+//    return (int) $user->id === (int) $id;
+//});
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
 
 
-Broadcast::channel('qrcode.{uuid}', function ($user, $uuid) {
+Broadcast::channel('QRCodeUsed.{uuid}', function ($user, $uuid) {
     return $user->id === \App\Models\PayToken::whereUuid($uuid)->firstOrFail()->user_id;
 });

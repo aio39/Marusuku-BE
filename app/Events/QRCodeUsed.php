@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,6 +15,10 @@ class QRCodeUsed implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+
+    public $user;
+    public $uuid;
+
     /**
      * Create a new event instance.
      *
@@ -25,10 +30,15 @@ class QRCodeUsed implements ShouldBroadcast
         $this->uuid = $uuid;
     }
 
-    public function  broadcastWith(){
-        return [
-            'data'=>'ok'
-        ];
+//    public function broadcastWith(){
+//        return [
+//            'data'=>'ok'
+//        ];
+//    }
+
+    public function broadcastAs()
+    {
+        return 'QRCodeUsed';
     }
 
     /**
@@ -38,6 +48,6 @@ class QRCodeUsed implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('qrcode.'.$this->order_id);
+        return new Channel('QRCodeUsed.'.$this->uuid);
     }
 }

@@ -71,6 +71,6 @@ class Hello implements  ShouldBroadcast
     public function broadcastOn()
     {
 //        return new PrivateChannel('order.'.$this->update->order_id);
-        return  new Channel('test');
+        return  new Channel('hello');
     }
 }
