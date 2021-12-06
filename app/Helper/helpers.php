@@ -5,15 +5,8 @@ use Illuminate\Support\Str;
 if (! function_exists('applyDefaultFSW')) {
     function applyDefaultFSW($request, $query)
     {
-        if($request->sort){
-            $sorts =  explode(',' ,$request->input('sort',''));
-            foreach ($sorts as $sortColumn){
-                $sortDirection = Str::startsWith($sortColumn,'-') ? 'desc':'asc';
-                $sortColumn = ltrim($sortColumn,'-');
-                $query->orderBy($sortColumn,$sortDirection);
-            }
-        }
-////        ?filter=category:food,id:2
+
+        ////        ?filter=category:food,id:2
         $query->when(request()->filled('filter'), function ($query) {
             $filters = explode(',',request('filter'));
             foreach ($filters as $filter){
@@ -23,6 +16,19 @@ if (! function_exists('applyDefaultFSW')) {
             return $query;
         });
 
+
+//        ?sort=-id,price
+        if($request->sort){
+            $sorts =  explode(',' ,$request->input('sort',''));
+            foreach ($sorts as $sortColumn){
+                $sortDirection = Str::startsWith($sortColumn,'-') ? 'desc':'asc';
+                $sortColumn = ltrim($sortColumn,'-');
+                $query->orderBy($sortColumn,$sortDirection);
+            }
+        }
+
+
+        // ?with=shop,menu
         $query->when(request()->filled('with'), function ($query) {
             $withs = explode(',',request('with'));
             if($withs){

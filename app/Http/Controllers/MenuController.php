@@ -84,7 +84,7 @@ class MenuController extends Controller
      * @param  \App\Models\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function show($shop_id,Menu $menu)
+    public function show(Menu $menu)
     {
         return response()->json($menu);
     }

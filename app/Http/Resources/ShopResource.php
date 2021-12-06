@@ -26,6 +26,7 @@ class ShopResource extends JsonResource
             'address2'=> $this->address2,
             'location'=> $this->location,
             'user_id'=> $this->user_id,
+            'dis' => $this->dis,
             'menus'=> $this->whenLoaded('menus'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
