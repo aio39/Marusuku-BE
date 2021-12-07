@@ -47,6 +47,21 @@ if (! function_exists('applyDefaultFSW')) {
             return $query;
         });
 
+
+
+        return $query;
+    }
+
+
+    function applyDefaultFindById($request, $query){
+        $query->when(request()->filled('with'), function ($query) {
+            $withs = explode(',',request('with'));
+            if($withs){
+                $query->with($withs);
+            }
+            return $query;
+        });
+
         return $query;
     }
 }
