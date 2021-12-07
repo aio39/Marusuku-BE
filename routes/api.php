@@ -43,6 +43,7 @@ Route::apiResource('/shops','ShopController');
 Route::apiResource('/menus','MenuController');
 Route::apiResource('/use_histories','UseHistoryController');
 Route::apiResource('/subscribes','SubscribeController');
+Route::apiResource('/reviews','ReviewController');
 
 
 Route::prefix('users')->middleware(['auth:sanctum'])->group(function(){

@@ -18,7 +18,7 @@ class UseHistoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($request)
+    public function index(Request $request)
     {
         $query = UseHistory::query();
         $query->with(['shop','menu']);
@@ -49,6 +49,7 @@ class UseHistoryController extends Controller
             $useHistory->user_id = $payToken->user_id;
             $useHistory->menu_id = $payToken->menu_id;
             $useHistory->shop_id = $payToken->shop_id;
+            $useHistory->subscribe_id = $payToken->subscribe_id;
             $useHistory->saveOrFail();
             broadcast(new QRCodeUsed(Auth::user(),$request->uuid));
             return response()->json($useHistory->refresh(),200);

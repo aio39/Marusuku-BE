@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Models\Subscribe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use function App\Helper\applyDefaultFSW;
+use function App\Helper\applyDefaultWith;
 
 class ReviewController extends Controller
 {
@@ -22,15 +25,6 @@ class ReviewController extends Controller
         return  $query->paginate($request->get('per_page') ?: 50);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -40,7 +34,19 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $subscribe =  Subscribe::query()->where('user_id','=', Auth::id())->findOrFail($request->subsribe_id);
+        $request->merge([
+            'user_id' => $subscribe->user_id,
+            'shop_id' => $subscribe->shop_id,
+            'menu_id' => $subscribe->menu_id
+        ]);
+
+        $review = Review::create($request->all());
+
+        return $review
+            ? response()->json($review,201)
+            : response()->json([],500);
     }
 
     /**
@@ -49,21 +55,16 @@ class ReviewController extends Controller
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function show(Review $review)
+    public function show(Request $request , $id)
     {
-        //
+        $query = Review::query();
+
+        $query = applyDefaultFindById($request, $query);
+
+        return  $query->findOrFail($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Review $review)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.

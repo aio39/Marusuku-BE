@@ -24,6 +24,7 @@ class CreateUseHistoriesTable extends Migration
             $table->foreignId('menu_id')->constrained();
             $table->foreignId('shop_id')->constrained();
 
+
         });
     }
 

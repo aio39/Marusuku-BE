@@ -24,6 +24,10 @@ class Subscribe extends Pivot
     ];
 
 
+    public function user(){
+        return $this->belongsTo('App\Models\User','user_id','id');
+    }
+
     public function shop(){
         return $this->belongsTo('App\Models\Shop','shop_id','id');
     }
@@ -31,5 +35,10 @@ class Subscribe extends Pivot
     public function menu(){
         return $this->belongsTo('App\Models\Menu','menu_id','id');
     }
+
+    public function useHistories(){
+        return $this->hasMany('App\Models\UseHistory','subscribe_id','id');
+    }
+
 
 }

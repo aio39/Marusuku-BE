@@ -12,5 +12,7 @@ class PayToken extends Model
     protected $fillable = [ 'uuid',
                             'user_id',
                             'menu_id',
-                            'shop_id',];
+                            'shop_id',
+                            'subscribe_id'
+        ];
 }

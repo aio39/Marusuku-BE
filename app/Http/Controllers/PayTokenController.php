@@ -48,6 +48,7 @@ class PayTokenController extends Controller
         $payToken->user_id = $subscribe->user_id;
         $payToken->menu_id = $subscribe->menu_id;
         $payToken->shop_id = $subscribe->shop_id;
+        $payToken->subscribe_id = $subscribe->id;
         $payToken->saveOrFail();
 
         return  $payToken->refresh();

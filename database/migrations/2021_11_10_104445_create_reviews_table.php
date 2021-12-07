@@ -17,7 +17,6 @@ class CreateReviewsTable extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('name');
             $table->string('content');
 
             $table->tinyInteger('score')->default(5);
