@@ -15,27 +15,12 @@ class Shop extends Model
     use HasFactory;
     use SpatialTrait;
     use Searchable;
-//    public function searchableAs()
-//    {
-//        return 'shops_index';
-//    }  기본값 상태 , primary key  -> getScoutKey
 
-//    public function toSearchableArray()
-//    {
-////         기본값 -toArray()
-//        $array = $this->toArray();
-//        return $array;
-//    }
-//
-//    public function shouldBeSearchable()
-//    {
-////        return $this->isPublished();
-//        return true;
-//    }
+//    protected $fillable = [
+//        'name','description','phone', 'homepage','address','address2','location','user_id','img'
+//    ];
 
-    protected $fillable = [
-        'name','description','phone', 'homepage','address','address2','location','user_id'
-    ];
+    protected $guarded = ['id'];
 
 //    protected $hidden = ['location'];
 
@@ -57,6 +42,10 @@ class Shop extends Model
 
     public function menus(){
         return $this->hasMany('App\Models\Menu');
+    }
+
+    public  function  category(){
+        return $this->hasOne('App\Models\Category');
     }
 
 }
