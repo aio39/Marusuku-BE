@@ -5,20 +5,37 @@ namespace App\Http\Controllers;
 use App\Http\Resources\MenuCollection;
 use App\Http\Resources\ShopCollection;
 use App\Models\Shop;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\ShopRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use function App\Helper\applyDefaultFSW;
 
 class ShopController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:checkUser,task')->only([
-            'update','updateDone','destroy'
-        ]);
+//        $this->middleware('can:isMine,shop')->only([
+//            'update','updateDone','destroy'
+//        ]);
+
+//       or 각 함수에서 $this->authorize('isMine, $shop)
+
+
+        $this->authorizeResource(Shop::class,'shop');
+
+        //index	    viewAny
+        //show  	view
+        //create	create
+        //store	    create
+        //edit	    update
+        //update	update
+        //destroy	delete
+
     }
+
 
     /**
      * @return \Illuminate\Support\Collection
@@ -36,7 +53,7 @@ class ShopController extends Controller
             $polygon = $t.' '.$l.','.$t.' '. $r.','.$b .' '.$r.','.$b.' '. $l.','.$t.' '. $l;
             $query->whereRaw("ST_Contains(ST_GeomFromText('Polygon((".$polygon."))',4326),location)");
         } elseif ($request->distance and  $request->lng and $request->lat){
-            $query->leftJoin(  DB::raw('
+            $query->leftJoin( DB::raw('
             (select ST_Distance(
                     ST_SRID(Point('.$request->lng.','.$request->lat.'),4326),
                     ST_SRID(s.location,4326)
@@ -53,7 +70,10 @@ class ShopController extends Controller
         $query = applyDefaultFSW($request,$query);
 
         $q = $request->get('search');
-        $query->whereRaw("MATCH(title,description) AGAINST(? IN BOOLEAN MODE)", array($q));
+        if($q){
+//            $query->whereRaw("MATCH(name,desc) AGAINST(? IN BOOLEAN MODE)", $q);
+            $query->whereRaw("MATCH(name, description) AGAINST(? IN BOOLEAN MODE)", $q);
+        }
 
         return  new ShopCollection($query->paginate($request->get('per_page') ?: 50));
     }
@@ -95,6 +115,8 @@ class ShopController extends Controller
      */
     public function update(Request $request, Shop $shop)
     {
+        Gate::authorize('update',$shop);
+
         $shop->name = $request->name;
 
         return $shop->update()

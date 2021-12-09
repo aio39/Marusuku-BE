@@ -18,7 +18,7 @@ class CreateShopsTable extends Migration
             $table->timestamps();
 
             $table->string('name');
-            $table->string('desc')->nullable();
+            $table->string('description')->nullable();
             $table->string('phone')->nullable();
             $table->string('homepage')->nullable();
             $table->string('category')->nullable();
@@ -34,8 +34,6 @@ class CreateShopsTable extends Migration
             $table->foreignId('user_id')->constrained();
 
             $table->spatialIndex('location');
-
-            \Illuminate\Support\Facades\DB::statement('ALTER TABLE shops ADD FULLTEXT shops_fulltext_index (name, desc)');
 
         });
     }

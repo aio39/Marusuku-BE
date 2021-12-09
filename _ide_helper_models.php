@@ -24,7 +24,7 @@ namespace App\Models{
  * @property int|null $limit_week
  * @property int|null $limit_month
  * @property int|null $limit_year
- * @property string|null $desc
+ * @property string|null $description
  * @property string|null $img
  * @property int $shop_id
  * @property int $vanish
@@ -40,7 +40,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Menu query()
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereCycleMonth($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Menu whereDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Menu whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereImg($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Menu whereLimitDay($value)
@@ -72,6 +72,7 @@ namespace App\Models{
  * @property int $user_id
  * @property int $menu_id
  * @property int $shop_id
+ * @property int $subscribe_id
  * @method static \Database\Factories\PayTokenFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|PayToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PayToken newQuery()
@@ -80,6 +81,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|PayToken whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PayToken whereMenuId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PayToken whereShopId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PayToken whereSubscribeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PayToken whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PayToken whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PayToken whereUuid($value)
@@ -91,9 +93,29 @@ namespace App\Models{
 /**
  * App\Models\Review
  *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $content
+ * @property int $score
+ * @property int $user_id
+ * @property int $menu_id
+ * @property int $shop_id
+ * @property-read \App\Models\Menu $menu
+ * @property-read \App\Models\Shop $shop
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\ReviewFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Review newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Review newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Review query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Review whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Review whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Review whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Review whereMenuId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Review whereScore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Review whereShopId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Review whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Review whereUserId($value)
  */
 	class Review extends \Eloquent {}
 }
@@ -107,15 +129,17 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $name
- * @property string|null $desc
+ * @property string|null $description
  * @property string|null $phone
  * @property string|null $homepage
  * @property string|null $category
  * @property string $address
  * @property string|null $address2
+ * @property int $score
  * @property int $score_total
  * @property int $score_count
  * @property int $user_id
+ * @property int $category_id
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $menus
  * @property-read int|null $menus_count
  * @property-read \App\Models\User $user
@@ -143,13 +167,15 @@ namespace App\Models{
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereAddress($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereAddress2($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereCategory($value)
+ * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereCategoryId($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereCreatedAt($value)
- * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereDesc($value)
+ * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereDescription($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereHomepage($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereId($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereLocation($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereName($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop wherePhone($value)
+ * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereScore($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereScoreCount($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereScoreTotal($value)
  * @method static \Grimzy\LaravelMysqlSpatial\Eloquent\Builder|Shop whereUpdatedAt($value)
@@ -166,7 +192,7 @@ namespace App\Models{
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property int $continue
+ * @property int $is_continue
  * @property string $settlement_date
  * @property string $end_date
  * @property int $user_id
@@ -174,13 +200,16 @@ namespace App\Models{
  * @property int $shop_id
  * @property-read \App\Models\Menu $menu
  * @property-read \App\Models\Shop $shop
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UseHistory[] $useHistories
+ * @property-read int|null $use_histories_count
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe query()
- * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereContinue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereEndDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereIsContinue($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereMenuId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereSettlementDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subscribe whereShopId($value)
@@ -201,6 +230,11 @@ namespace App\Models{
  * @property int $user_id
  * @property int $menu_id
  * @property int $shop_id
+ * @property int $subscribe_id
+ * @property-read \App\Models\Menu $menu
+ * @property-read \App\Models\Shop $shop
+ * @property-read \App\Models\Subscribe $subscribe
+ * @property-read \App\Models\User $user
  * @method static \Database\Factories\UseHistoryFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|UseHistory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UseHistory newQuery()
@@ -210,6 +244,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|UseHistory whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UseHistory whereMenuId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UseHistory whereShopId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UseHistory whereSubscribeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UseHistory whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UseHistory whereUserId($value)
  */
@@ -229,17 +264,12 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property int|null $shop_id
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $pay_tokens
  * @property-read int|null $pay_tokens_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
- * @property-read int|null $permissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $reviews
  * @property-read int|null $reviews_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
- * @property-read int|null $roles_count
  * @property-read \App\Models\Shop|null $shop
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Menu[] $subscribes
  * @property-read int|null $subscribes_count
@@ -250,9 +280,7 @@ namespace App\Models{
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
- * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
@@ -261,7 +289,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereShopId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  */
 	class User extends \Eloquent {}

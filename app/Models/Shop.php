@@ -20,21 +20,21 @@ class Shop extends Model
 //        return 'shops_index';
 //    }  기본값 상태 , primary key  -> getScoutKey
 
-    public function toSearchableArray()
-    {
-//         기본값 -toArray()
-        $array = $this->toArray();
-        return $array;
-    }
-
-    public function shouldBeSearchable()
-    {
-//        return $this->isPublished();
-        return true;
-    }
+//    public function toSearchableArray()
+//    {
+////         기본값 -toArray()
+//        $array = $this->toArray();
+//        return $array;
+//    }
+//
+//    public function shouldBeSearchable()
+//    {
+////        return $this->isPublished();
+//        return true;
+//    }
 
     protected $fillable = [
-        'name','desc','phone', 'homepage','address','address2','location','user_id'
+        'name','description','phone', 'homepage','address','address2','location','user_id'
     ];
 
 //    protected $hidden = ['location'];

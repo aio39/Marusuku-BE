@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use App\Models\Menu;
 use App\Models\Shop;
 use Illuminate\Database\Seeder;
 
@@ -18,7 +20,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
-            ShopSeeder::class
+            Category::class,
+            ShopSeeder::class,
+            Menu::class,
         ]);
 
     }

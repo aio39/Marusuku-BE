@@ -10,7 +10,7 @@ class Menu extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name' , 'price' , 'cycle_month' , 'limit_day' , 'limit_week' , 'limit_month' , 'limit_year' , 'desc' , 'img' , 'shop_id' , 'vanish' , 'vanish_at'
+        'name' , 'price' , 'cycle_month' , 'limit_day' , 'limit_week' , 'limit_month' , 'limit_year' , 'description' , 'img' , 'shop_id' , 'vanish' , 'vanish_at'
         , 'limit_day_amount' ,
         'limit_week_amount' ,
         'limit_month_amount' ,
@@ -28,7 +28,7 @@ class Menu extends Model
         'limit_week_amount'=> null,
         'limit_month_amount'=>null,
         'limit_year_amount'=> null,
-        'desc'=> null,
+        'description'=> null,
         'img'=> null,
         'vanish'=>false,
         'vanish_at'=>null
