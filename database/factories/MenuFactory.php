@@ -294,7 +294,7 @@ class MenuFactory extends Factory
             'limit_month'=>  $faker->numberBetween(1,30),
             'description' => $faker->realTextBetween(100,200),
             'img' => 'menu/'.$image,
-            'shop_id' => $faker->numberBetween(1,30),
+            'shop_id' => $faker->numberBetween(1,400),
         ];
     }
 }

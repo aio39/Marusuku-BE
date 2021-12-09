@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Menu;
+use App\Models\Review;
 use App\Models\Shop;
+use App\Models\Subscribe;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,6 +25,8 @@ class DatabaseSeeder extends Seeder
             Category::class,
             ShopSeeder::class,
             Menu::class,
+            Subscribe::class,
+            Review::class,
         ]);
 
     }

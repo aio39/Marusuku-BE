@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -37,5 +38,8 @@ class UserSeeder extends Seeder
                 'created_at'=> now(),
                 'updated_at'=> now(),
             ]]);
+
+
+        User::factory()->times(40)->create();
     }
 }

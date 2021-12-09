@@ -2,12 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Menu;
-use Faker\Factory;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class MenuSeeder extends Seeder
+class PayTokenSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,6 +13,6 @@ class MenuSeeder extends Seeder
      */
     public function run()
     {
-        Menu::factory()->times(400)->create();
+        //
     }
 }

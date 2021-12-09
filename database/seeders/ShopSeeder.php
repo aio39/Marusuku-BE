@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
@@ -279,7 +280,6 @@ class ShopSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
-
         $csv = array_map('str_getcsv', file('storage/app/places.csv'));
         $shops_data = [];
         foreach ($csv as $data) {
@@ -294,10 +294,9 @@ class ShopSeeder extends Seeder
                 'score'=> $score,
                 'score_total'=> $score * $count,
                 'score_count'=> $count,
-//            'location'=> new Point($this->faker->latitude(37,38),$this->faker->latitude(37,38),3857),
-//            'location'=> new Point(40.7484404, -73.9878441,3857),
                 'location'=> \DB::raw("ST_SRID(ST_GeomFromText('POINT(".strval($data[5])." ".strval($data[4]).")'), 4326)"),
-                'user_id'=> $faker->numberBetween(1,3),
+//                'user_id'=> User::factory()->createOne()->getAttribute('id'),
+                'user_id'=> $faker->randomNumber(1,40),
                 'img' => 'menu/'.$image,
                 'category_id'=> $faker->numberBetween(7,12),
                 'created_at'=> now(),
