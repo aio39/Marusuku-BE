@@ -20,7 +20,6 @@ Route::get('/test',function (){ return 'Hello World';});
 Route::post('/login','LoginController@login');
 Route::get('/logout','LoginController@logout');
 
-
 Route::get('/geocode',function (Request $request){
     if($request->query('address') == null){
         return response()->json(["message"=>"address not exist"],500);

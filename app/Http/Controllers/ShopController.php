@@ -52,6 +52,9 @@ class ShopController extends Controller
         }
         $query = applyDefaultFSW($request,$query);
 
+        $q = $request->get('search');
+        $query->whereRaw("MATCH(title,description) AGAINST(? IN BOOLEAN MODE)", array($q));
+
         return  new ShopCollection($query->paginate($request->get('per_page') ?: 50));
     }
 

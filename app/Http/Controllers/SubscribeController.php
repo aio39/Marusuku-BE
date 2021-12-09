@@ -25,7 +25,7 @@ class SubscribeController extends Controller
 //            })->get();
 
         $query = Subscribe::query();
-//        $query->with(['shop','menu']);
+        $query->with(['shop','menu']);
 
         $query = applyDefaultFSW($request,$query);
 

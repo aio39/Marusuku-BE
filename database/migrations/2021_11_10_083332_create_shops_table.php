@@ -26,6 +26,7 @@ class CreateShopsTable extends Migration
 //            $table->string('영업일')->nullable();
             $table->string('address');
             $table->string('address2')->nullable();
+            $table->integer('score')->default(0);
             $table->integer('score_total')->default(0);
             $table->integer('score_count')->default(0);
             $table->point('location',4326); // google map 3857
@@ -33,6 +34,9 @@ class CreateShopsTable extends Migration
             $table->foreignId('user_id')->constrained();
 
             $table->spatialIndex('location');
+
+            \Illuminate\Support\Facades\DB::statement('ALTER TABLE shops ADD FULLTEXT shops_fulltext_index (name, desc)');
+
         });
     }
 

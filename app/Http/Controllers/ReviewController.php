@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Models\Shop;
 use App\Models\Subscribe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use function App\Helper\applyDefaultFSW;
 use function App\Helper\applyDefaultWith;
 
@@ -42,7 +44,19 @@ class ReviewController extends Controller
             'menu_id' => $subscribe->menu_id
         ]);
 
-        $review = Review::create($request->all());
+        DB::beginTransaction();
+
+        try {
+            $review = Review::create($request->all());
+            Shop::query()->where('id',$subscribe->shop_id)->update([
+                'score_total' => DB::raw('score_total + :score',[':score'=>$request->score]),
+                'score_counts' => DB::raw('score_count + 1'),
+                'score'=>DB::raw('(score_total + :score) / (score_count + 1)',[':score'=>$request->score])
+            ]);
+        }catch (\Exception $e){
+            DB::rollBack();
+            throw  $e;
+        }
 
         return $review
             ? response()->json($review,201)
@@ -75,7 +89,32 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        //
+        $request->validate([
+            'score' => 'min:0|max:5',
+            'content' => 'min:0|max:1000',
+        ]);
+
+
+        $change_amount =  $review->score - $request->score;
+
+        DB::beginTransaction();
+
+        try {
+            $review->shop()->update([
+                'score_total' => DB::raw('score_total - :$change_amount',[':$change_amount'=>$change_amount]),
+                'score_counts' => DB::raw('score_count'),
+                'score'=>DB::raw('(score_total - :$change_amount) / (score_count)',[':$change_amount'=>$change_amount])
+            ]);
+
+            $review->fill($request->only(['content','score']));
+            $review->saveOrFail();
+        }catch (\Exception $e){
+            DB::rollBack();
+            throw  $e;
+        }
+
+        return response()->json($review,204);
+
     }
 
     /**
@@ -86,6 +125,8 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        //
+        DB::transaction(function () use($review){
+            $review->deleteOrFail();
+        });
     }
 }

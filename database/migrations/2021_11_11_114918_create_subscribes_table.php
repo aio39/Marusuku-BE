@@ -16,7 +16,7 @@ class CreateSubscribesTable extends Migration
         Schema::create('subscribes', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->boolean('continue')->default(true);
+            $table->boolean('is_continue')->default(true);
 
             $table->timestamp('settlement_date');
             $table->timestamp('end_date');
