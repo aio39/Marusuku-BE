@@ -2,10 +2,25 @@
 namespace App\Helper;
 use Illuminate\Support\Str;
 
+if (! function_exists('applyDefaultFindById')) {
+    function applyDefaultFindById($request, $query){
+        $query->when(request()->filled('with'), function ($query) {
+            $withs = explode(',',request('with'));
+            if($withs){
+                $query->with($withs);
+            }
+            return $query;
+        });
+
+        return $query;
+    }
+
+}
+
+
 if (! function_exists('applyDefaultFSW')) {
     function applyDefaultFSW($request, $query)
     {
-
         ////        ?filter=category:food,id:2
         $query->when(request()->filled('filter'), function ($query) {
             $filters = explode(',',request('filter'));
@@ -53,16 +68,6 @@ if (! function_exists('applyDefaultFSW')) {
     }
 
 
-    function applyDefaultFindById($request, $query){
-        $query->when(request()->filled('with'), function ($query) {
-            $withs = explode(',',request('with'));
-            if($withs){
-                $query->with($withs);
-            }
-            return $query;
-        });
 
-        return $query;
-    }
 }
 

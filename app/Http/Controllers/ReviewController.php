@@ -8,6 +8,7 @@ use App\Models\Subscribe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function App\Helper\applyDefaultFindById;
 use function App\Helper\applyDefaultFSW;
 use function App\Helper\applyDefaultWith;
 
@@ -18,7 +19,7 @@ class ReviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($request)
+    public function index(Request $request)
     {
         $query = Review::query();
 
@@ -37,7 +38,7 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
 
-        $subscribe =  Subscribe::query()->where('user_id','=', Auth::id())->findOrFail($request->subsribe_id);
+        $subscribe =  Subscribe::query()->where('user_id','=', Auth::id())->findOrFail($request->subscribe_id);
         $request->merge([
             'user_id' => $subscribe->user_id,
             'shop_id' => $subscribe->shop_id,
@@ -49,10 +50,12 @@ class ReviewController extends Controller
         try {
             $review = Review::create($request->all());
             Shop::query()->where('id',$subscribe->shop_id)->update([
-                'score_total' => DB::raw('score_total + :score',[':score'=>$request->score]),
-                'score_counts' => DB::raw('score_count + 1'),
-                'score'=>DB::raw('(score_total + :score) / (score_count + 1)',[':score'=>$request->score])
+            //  NOTE  Raw Binding 최선인가? , Validation은 해주지만...
+                'score_total' => DB::raw('score_total + '.$request->score),
+                'score_count' => DB::raw('score_count + 1'),
+                'score'=>DB::raw('(score_total + '.$request->score.') / (score_count + 1)')
             ]);
+            DB::commit();
         }catch (\Exception $e){
             DB::rollBack();
             throw  $e;
@@ -101,19 +104,20 @@ class ReviewController extends Controller
 
         try {
             $review->shop()->update([
-                'score_total' => DB::raw('score_total - :$change_amount',[':$change_amount'=>$change_amount]),
-                'score_counts' => DB::raw('score_count'),
-                'score'=>DB::raw('(score_total - :$change_amount) / (score_count)',[':$change_amount'=>$change_amount])
+                'score_total' => DB::raw('score_total - '.$change_amount),
+                'score_count' => DB::raw('score_count'),
+                'score'=>DB::raw('(score_total - '.$change_amount.') / (score_count)')
             ]);
 
-            $review->fill($request->only(['content','score']));
-            $review->saveOrFail();
+            $review->updateOrFail($request->only(['content','score']));
+
+            DB::commit();
         }catch (\Exception $e){
             DB::rollBack();
             throw  $e;
         }
 
-        return response()->json($review,204);
+        return response()->json($review,200);
 
     }
 
