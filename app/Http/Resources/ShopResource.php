@@ -24,7 +24,7 @@ class ShopResource extends JsonResource
             'homepage'=> $this->homepage,
             'address'=> $this->address,
             'address2'=> $this->address2,
-            'score' => $this->score,
+            'score' => round($this->score,1),
             'score_total' => $this->score_total,
             'score_count' => $this->score_count,
             'location'=> $this->location,

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Shop;
+use App\Policies\ShopPolicy;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -15,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+//        Shop::class => ShopPolicy::class  , 네이밍 규칙 자동 탐색
     ];
 
     /**

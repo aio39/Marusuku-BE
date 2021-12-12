@@ -70,8 +70,9 @@ class ShopController extends Controller
         $query = applyDefaultFSW($request,$query);
 
         $q = $request->get('search');
+
+//        Fulltext * 부분 제외 -  " " 로 묶으면 단어 합치기
         if($q){
-//            $query->whereRaw("MATCH(name,desc) AGAINST(? IN BOOLEAN MODE)", $q);
             $query->whereRaw("MATCH(name, description) AGAINST(? IN BOOLEAN MODE)", $q);
         }
 

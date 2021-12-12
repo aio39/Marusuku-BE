@@ -20,7 +20,7 @@ class ReviewSeeder extends Seeder
         foreach ($subscribes as $subscribe){
             Review::query()->create([
                 'content'=> $faker->realTextBetween(10,100),
-                'score'=> $faker->randomNumber(1,5),
+                'score'=> $faker->numberBetween(1,5),
                 'user_id'=> $subscribe->user_id,
                 'menu_id'=> $subscribe->menu_id,
                 'shop_id'=> $subscribe->shop_id,

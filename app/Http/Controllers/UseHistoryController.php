@@ -21,7 +21,7 @@ class UseHistoryController extends Controller
     public function index(Request $request)
     {
         $query = UseHistory::query();
-        $query->with(['shop','menu']);
+        $query->with(['shop','menu','user']);
 
         $query = applyDefaultFSW($request,$query);
 

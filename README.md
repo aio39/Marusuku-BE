@@ -1,65 +1,31 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Marusuku
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 오프라인 구독 상품 플랫폼
 
-## About Laravel
+### 특징, 어려웠 던점. 배운점
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- 좌표계 활용을 위해 Point,Polygon 등의 공간 데이터를 활용
+  - Blub 상태의 Point를 GeoCode 좌표값을 Casting
+  - Spatial Function을 이용한 Bounds 포함, 거리 탐색 
+- index() (viewAny) 를 항상 Pagination으로 리턴하며 공통 Filter(where), With(Join), Sort(order) 기본 사양을
+    표준화한후 Global Helper 함수를 통해 한 줄의 코드를 통해 Client 측에서 다양한 쿼리를 할 수 있게 함. 클라이언트 측에서도 TS를 특징을 활용한 URL Query 생성 함수를 만들어서 클라이언트측의 실수를 최소화하며 쓰기 편하게함.
+- pusher 라이브러리 엔진에 내장 websocket 서버로 교체후 (확장 라이브러리 사용) 사용
+- Full Text Index를 적용하여 검색 쿼리 적용, 처음에 일부 컬럼명을 예약어인 desc로 하는 실수를 통해 예약어 주의에 대해 다시 환기함.
+- 가게 별점은 빠른 쿼리 처리를 위해 비정규화로 "실제스코어", "총 스코어 합" ,"평가 횟수"로 나눠서 관리함. 리뷰 테이블도 별도로 존재하여 데이터 무결성을 위해 트랜잭션을 사용.
+- Faker로는 좌표 값을 시딩할 수 없어 공공 데이터에서 좌표값이 있는 음식점 CSV 파일을 구하여 천개 이상의 음식점 데이터를 시딩함.
+- Self 참조 , M:M , N:M,  N:N 다양한 DB 관계 실제로 적용
+- 다음 주소 찾기 API에서 도로명 주소를 받아 브라우저에서는 CORS로 실행 불가능한 Google Map API를 라라벨 서버에서 실행하여 주소를 실제 좌표로 변환함.
+- Model인터페이스를 상속하는 ORM의 with property는 SQL 쿼리 분석 결과 Lazy Loading으로 처리되어 사용하지 않기로 함.
+- API Resource 컨트롤러를 사용할 경우 API Resource Policy가 매우 유용함.
+- Gate, Policy, Requests, Collection을 모든 모델에 적용하지는 않았지만 각각의 사용법을 어느정도 숙지함.
+- 세션 쿠키의 존재여부로 SPA에서 로그인 가능 상태인지 확인하기 위                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           해 라라벨 Sanctom이 자동 생성해주는 HTTP ONLY 쿠키와 같은 만료기간을 가진 쿠키를 미들웨어를 커스텀해서 추가함.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 향후 공부 목표
+- 라라벨 성능 향상을 위해 라라벨 옥탄 사용
+- Redis 등을 활용한 캐싱 작업
+- 권환 관리 부분 철저하게 보충
+- Socialite를 활용한 Oauth 로그인
+- 아임포트 연동을 통한 결제 테스트
+- 라라벨 테스트 공부
+- 
+- 파라미터 , 리턴 값 TypeHint 작성.

@@ -90,13 +90,14 @@ class ReviewController extends Controller
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Review $review)
+    public function update(Request $request, $review_id)
     {
         $request->validate([
             'score' => 'min:0|max:5',
             'content' => 'min:0|max:1000',
         ]);
 
+        $review = Review::query()->with(['user','shop','menu'])->findOrFail($review_id);
 
         $change_amount =  $review->score - $request->score;
 

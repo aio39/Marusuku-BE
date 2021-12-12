@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Subscribe extends Pivot
@@ -11,7 +12,7 @@ class Subscribe extends Pivot
     protected $fillable = [
     'settlement_date',
     'end_date',
-    'continue',
+    'is_continue',
     'user_id',
     'menu_id',
     'shop_id',
@@ -20,7 +21,7 @@ class Subscribe extends Pivot
 //    protected $with = ['shops','menus'];
 
     protected $attributes = [
-        'continue' => true,
+        'is_continue' => true,
     ];
 
 

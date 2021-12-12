@@ -29,12 +29,14 @@ class MenuController extends Controller
         $query = applyDefaultFSW($request,$query);
 
         if($request->vanish === 'all'){ // 모든 상품
-            $query->where('vanish','!=',1);
+//            $query->where('vanish','!=',1);
         } elseif ($request->vanish === 'only'){ // 판매 중지된 상품만
             $query->where('vanish','=',1);
         } else{ // 판매중인 상품만
             $query->where('vanish','!=',1);
         }
+
+//        TODO  groupby + 조인으로 메뉴별 평점 구하기
 
         return  new MenuCollection($query->paginate($request->get('per_page') ?: 50));
 
